@@ -40,7 +40,7 @@ app.get("/tasks", function (req, res) {
 
 app.post("/tasks", function (req, res) {
   var newTask = new Task({
-    objective: res.body.objective
+    objective: req.body.objective
   });
 
   newTask.save().then(function (newtask) {
