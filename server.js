@@ -44,7 +44,30 @@ app.post("/tasks", function (req, res) {
   });
 
   newTask.save().then(function (newtask) {
-    return res.redirect('/tasks');
+    return res.sendStatus(200);
+  }, function (err) {
+    return res.status(400).send(err);
+  });
+});
+
+app.post("/tasks/:task_id", function (req, res) {
+  Task.findById(req.params.task_id).exec()
+  .then(function (task) {
+    task.objective = req.body.objective;
+
+    task.save()
+    .then(function (saved_task) {
+      return res.sendStatus(200);
+    }, function (err) {
+      return res.status(400).send(err);
+    })
+  })
+})
+
+app.get("/tasks/:task_id/delete", function (req, res) {
+  Task.findById(req.params.task_id).remove().exec()
+  .then(function () {
+    return res.sendStatus(200);
   }, function (err) {
     return res.status(400).send(err);
   });
